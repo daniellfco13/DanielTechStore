@@ -327,7 +327,21 @@
   let activeCat = "todos";
   let searchTerm = "";
   let sortMode = "relevance";
-  let cart = {}; // id -> qty
+  // O carrinho fica guardado no navegador (localStorage): continua lá ao trocar de página e voltar.
+  const CART_KEY = 'dts_cart';
+  function loadCart(){
+    try {
+      const saved = JSON.parse(localStorage.getItem(CART_KEY) || '{}');
+      if (!saved || typeof saved !== 'object' || Array.isArray(saved)) return {};
+      const c = {};
+      for (const id in saved) {
+        const qty = parseInt(saved[id], 10);
+        if (qty > 0 && PRODUCTS.some(p => p.id == id)) c[id] = Math.min(qty, 99); // ignora lixo e produtos que não existem mais
+      }
+      return c;
+    } catch (e) { return {}; }
+  }
+  let cart = loadCart(); // id -> qty
 
   const grid = document.getElementById('productsGrid');
   const emptyState = document.getElementById('emptyState');
@@ -404,6 +418,7 @@
   }
 
   function updateCartUI(){
+    try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch (e) {}
     const ids = Object.keys(cart);
     const countEl = document.getElementById('cartCount');
     const itemsEl = document.getElementById('cartItems');
@@ -478,6 +493,7 @@
   const navLinks = document.getElementById('navLinks');
   burger.addEventListener('click', () => navLinks.classList.toggle('open'));
 
+  updateCartUI();
   render();
 </script>
 </body>
