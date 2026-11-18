@@ -26,7 +26,7 @@ $pdo = getConexao();
 
 function buscar(PDO $pdo, int $id): ?array
 {
-    $st = $pdo->prepare('SELECT ' . COLUNAS . ' FROM clientes WHERE id = :id LIMIT 1');
+    $st = $pdo->prepare('SELECT ' . COLUNAS . ' FROM clientes WHERE id = :id AND excluido_em IS NULL LIMIT 1');
     $st->execute(['id' => $id]);
     return $st->fetch() ?: null;
 }

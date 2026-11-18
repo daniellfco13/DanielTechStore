@@ -13,7 +13,6 @@ session_set_cookie_params(['httponly' => true, 'samesite' => 'Lax']);
 session_start();
 
 require __DIR__ . '/dbdaniel.php';
-require __DIR__ . '/paineladmdaniel.php';
 
 function responder(bool $sucesso, string $mensagem, int $status = 200, array $extra = []): void
 {
@@ -66,11 +65,6 @@ if ($erros) {
     responder(false, 'Corrija os campos indicados.', 422, ['erros' => $erros]);
 }
 
-// O e-mail de acesso do administrador é reservado: ninguém pode criar conta com ele.
-// (mesma mensagem de "e-mail já cadastrado", para não revelar que ele é especial)
-if (painel_email_reservado($email)) {
-    responder(false, 'Já existe uma conta cadastrada com este e-mail.', 409);
-}
 
 // normaliza o CEP para o formato 00000-000
 if (!str_contains($cep, '-')) {

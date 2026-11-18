@@ -105,6 +105,15 @@ try {
             acao_cliente($pdo);
             break;
 
+        case 'usuario_editar':
+        case 'usuario_admin':
+        case 'usuario_excluir':
+        case 'usuario_senha':
+            if ($metodo !== 'POST') responder(false, 'Método não permitido.', 405);
+            exigir_admin();
+            acao_usuario($pdo, $acao);
+            break;
+
         case 'status':
             if ($metodo !== 'POST') responder(false, 'Método não permitido.', 405);
             exigir_admin();
@@ -363,16 +372,18 @@ function acao_dados(PDO $pdo): void
             'id' => (int)$l['id'], 'nome' => $l['nome'], 'sobrenome' => $l['sobrenome'], 'email' => $l['email'],
             'idade' => (int)$l['idade'], 'sexo' => $l['sexo'], 'cep' => $l['cep'], 'cidade' => $l['cidade'],
             'bairro' => $l['bairro'], 'rua' => $l['rua'], 'numero' => $l['numero'], 'criado_em' => $l['criado_em'],
+            'admin' => (int)$l['is_admin'] === 1,
             'pedidos' => (int)$l['pedidos'], 'total_gasto' => round((float)$l['total_gasto'], 2),
             'ultimo_pedido' => $l['ultimo_pedido'],
         ];
     }, consulta($pdo,
         "SELECT c.id, c.nome, c.sobrenome, c.email, c.idade, c.sexo, c.cep, c.cidade, c.bairro, c.rua, c.numero,
-                c.criado_em, COUNT(DISTINCT p.id) AS pedidos,
+                c.criado_em, c.is_admin, COUNT(DISTINCT p.id) AS pedidos,
                 COALESCE(" . SQL_REC . ", 0) AS total_gasto, MAX(p.criado_em) AS ultimo_pedido
          FROM clientes c
          LEFT JOIN pedidos p ON p.cliente_id = c.id AND p.status <> 'cancelado'
          LEFT JOIN pedido_itens i ON i.pedido_id = p.id
+         WHERE c.excluido_em IS NULL
          GROUP BY c.id ORDER BY c.criado_em DESC, c.id DESC", []));
 
     // ---- pedidos do período (respeitando status e categoria) -----------
@@ -414,10 +425,103 @@ function acao_cliente(PDO $pdo): void
     if ($id <= 0) responder(false, 'Cliente inválido.', 422);
 
     $r = consulta($pdo,
-        'SELECT id, nome, sobrenome, email, idade, sexo, cep, cidade, bairro, rua, numero, criado_em
+        'SELECT id, nome, sobrenome, email, idade, sexo, cep, cidade, bairro, rua, numero, criado_em, is_admin, excluido_em
          FROM clientes WHERE id = :id', [':id' => $id]);
     if (!$r) responder(false, 'Cliente não encontrado.', 404);
 
     list($pedidos, $limitado) = pedidos_com_itens($pdo, 'p.cliente_id = :cid', [':cid' => $id], 500);
-    responder(true, 'ok', 200, ['cliente' => $r[0], 'pedidos' => $pedidos, 'pedidos_limitado' => $limitado]);
+    $c = $r[0];
+    $c['admin'] = (int)$c['is_admin'] === 1;
+    $c['excluida'] = $c['excluido_em'] !== null;
+    unset($c['is_admin'], $c['excluido_em']);
+    responder(true, 'ok', 200, ['cliente' => $c, 'pedidos' => $pedidos, 'pedidos_limitado' => $limitado]);
+}
+
+// =====================================================================
+// GESTÃO DE USUÁRIOS (editar, administrador, excluir, redefinir senha)
+// =====================================================================
+
+/** Conta ativa (não excluída) ou null. */
+function usuario_ativo(PDO $pdo, int $id): ?array
+{
+    $st = $pdo->prepare('SELECT id, is_admin FROM clientes WHERE id = :id AND excluido_em IS NULL');
+    $st->execute([':id' => $id]);
+    return $st->fetch() ?: null;
+}
+
+/** Não deixa o administrador mexer na própria conta por aqui (evita trancar a si mesmo). */
+function protege_propria_conta(int $id): void
+{
+    if ($id === (int)($_SESSION['cliente_id'] ?? 0)) {
+        responder(false, 'Você não pode alterar a própria conta por aqui.', 422);
+    }
+}
+
+function acao_usuario(PDO $pdo, string $acao): void
+{
+    $d  = corpo_json();
+    $id = (int)($d['id'] ?? 0);
+    if ($id <= 0) responder(false, 'Usuário inválido.', 422);
+    if (!usuario_ativo($pdo, $id)) responder(false, 'Usuário não encontrado.', 404);
+
+    // ---- editar dados -------------------------------------------------
+    if ($acao === 'usuario_editar') {
+        $f = [];
+        foreach (['nome', 'sobrenome', 'email', 'cep', 'cidade', 'bairro', 'rua', 'numero'] as $k)
+            $f[$k] = trim((string)($d[$k] ?? ''));
+        $f['idade'] = (int)($d['idade'] ?? 0);
+        $f['sexo']  = (string)($d['sexo'] ?? '');
+
+        $erros = [];
+        if (mb_strlen($f['nome']) < 2)      $erros[] = 'Nome inválido.';
+        if (mb_strlen($f['sobrenome']) < 2) $erros[] = 'Sobrenome inválido.';
+        if (!filter_var($f['email'], FILTER_VALIDATE_EMAIL)) $erros[] = 'E-mail inválido.';
+        if ($f['idade'] < 13 || $f['idade'] > 120) $erros[] = 'Idade inválida.';
+        if (!in_array($f['sexo'], ['feminino', 'masculino', 'outro', 'prefiro-nao-informar'], true)) $erros[] = 'Sexo inválido.';
+        if (!preg_match('/^\d{5}-?\d{3}$/', $f['cep'])) $erros[] = 'CEP inválido.';
+        if (mb_strlen($f['cidade']) < 2)    $erros[] = 'Cidade inválida.';
+        if (mb_strlen($f['bairro']) < 2)    $erros[] = 'Bairro inválido.';
+        if (mb_strlen($f['rua']) < 2)       $erros[] = 'Rua inválida.';
+        if ($f['numero'] === '')            $erros[] = 'Número inválido.';
+        if ($erros) responder(false, 'Corrija os campos indicados.', 422, ['erros' => $erros]);
+
+        $st = $pdo->prepare('SELECT id FROM clientes WHERE email = :e AND id <> :id');
+        $st->execute([':e' => $f['email'], ':id' => $id]);
+        if ($st->fetch()) responder(false, 'Já existe outra conta com este e-mail.', 409);
+
+        if (!str_contains($f['cep'], '-')) $f['cep'] = substr($f['cep'], 0, 5) . '-' . substr($f['cep'], 5);
+        $f['id'] = $id;
+        $pdo->prepare('UPDATE clientes SET nome=:nome, sobrenome=:sobrenome, email=:email, idade=:idade, sexo=:sexo,
+                       cep=:cep, cidade=:cidade, bairro=:bairro, rua=:rua, numero=:numero WHERE id=:id')->execute($f);
+        responder(true, 'Dados atualizados.');
+    }
+
+    // ---- dar ou tirar o papel de administrador -------------------------
+    if ($acao === 'usuario_admin') {
+        protege_propria_conta($id);
+        $torna = !empty($d['admin']) ? 1 : 0;
+        $pdo->prepare('UPDATE clientes SET is_admin = :a WHERE id = :id')->execute([':a' => $torna, ':id' => $id]);
+        responder(true, $torna ? 'Conta agora é administrador.' : 'Conta deixou de ser administrador.');
+    }
+
+    // ---- excluir: apaga os dados pessoais, mantém os pedidos (contabilidade) ----
+    if ($acao === 'usuario_excluir') {
+        protege_propria_conta($id);
+        $pdo->prepare("UPDATE clientes SET nome = 'Conta', sobrenome = 'excluída',
+                         email = :email, senha_hash = '!excluida', cep = '00000-000', cidade = '',
+                         bairro = '', rua = '', numero = '0', is_admin = 0, excluido_em = NOW()
+                       WHERE id = :id")
+            ->execute([':email' => 'excluida-' . $id . '@excluida.invalid', ':id' => $id]);
+        responder(true, 'Conta excluída. Os pedidos foram mantidos para o histórico financeiro.');
+    }
+
+    // ---- redefinir senha: gera uma senha temporária (a antiga não pode ser lida) ----
+    if ($acao === 'usuario_senha') {
+        $alfabeto = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789';
+        $senha = '';
+        for ($i = 0; $i < 10; $i++) $senha .= $alfabeto[random_int(0, strlen($alfabeto) - 1)];
+        $pdo->prepare('UPDATE clientes SET senha_hash = :h WHERE id = :id')
+            ->execute([':h' => password_hash($senha, PASSWORD_DEFAULT), ':id' => $id]);
+        responder(true, 'Senha redefinida. Envie a senha temporária ao cliente.', 200, ['senha_temporaria' => $senha]);
+    }
 }
