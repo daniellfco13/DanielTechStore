@@ -151,6 +151,19 @@
   .order-top small{color:var(--muted-2);font-size:12px;display:block;}
   .order-total{display:flex;justify-content:space-between;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);font-size:13px;}
   .loading{color:var(--muted-2);text-align:center;padding:30px 0;font-size:13.5px;}
+  .acoes{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 4px;}
+  .acoes .btn{flex:0 0 auto;}
+  .senha-box{background:var(--bg);border:1px solid var(--border-strong);border-radius:9px;padding:12px 14px;margin:12px 0;font-size:13px;color:var(--muted);}
+  .senha-box b{font-family:var(--disp);font-size:16px;color:var(--ink);letter-spacing:.06em;margin-right:8px;}
+  .senha-box p{margin-bottom:8px;}
+  .sub-inline{color:var(--muted-2);font-size:12.5px;}
+  .edit-form{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .edit-form label{display:block;font-family:var(--util);font-size:11.5px;font-weight:700;color:var(--muted-2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em;}
+  .edit-form input,.edit-form select{width:100%;padding:9px 10px;border-radius:8px;background:var(--bg);border:1px solid var(--border-strong);color:var(--ink);font-size:13.5px;outline:none;}
+  .edit-form input:focus,.edit-form select:focus{border-color:var(--blue);}
+  .edit-form .full{grid-column:1/-1;}
+  .edit-form .acoes{grid-column:1/-1;margin:4px 0 0;}
+  .badge-admin{color:var(--green);background:rgba(62,232,138,.12);}
 
   .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);background:var(--surface-2);border:1px solid var(--border-strong);color:var(--ink);padding:11px 18px;border-radius:10px;font-size:13.5px;z-index:200;opacity:0;pointer-events:none;transition:opacity .2s, transform .2s;box-shadow:0 14px 36px -12px rgba(0,0,0,.6);max-width:92vw;}
   .toast.show{opacity:1;transform:translate(-50%,0);}
@@ -333,7 +346,7 @@
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Cliente</th><th>Idade · Sexo</th><th>Localização</th><th>Cadastro</th><th class="num">Pedidos</th><th class="num">Total gasto</th></tr></thead>
+          <thead><tr><th>Cliente</th><th>Endereço completo</th><th>Idade · Sexo</th><th>Cadastro</th><th class="num">Pedidos</th><th class="num">Total gasto</th><th>Papel</th></tr></thead>
           <tbody id="tbClientes"></tbody>
         </table>
       </div>
@@ -356,7 +369,7 @@
 (function () {
   'use strict';
 
-  const API = 'painel_apidaniel.php';
+  const API = '../painel_apidaniel.php';
   const $ = (id) => document.getElementById(id);
 
   // ------------------------------------------------------------------
@@ -429,7 +442,7 @@
 
   $('btnLogout').addEventListener('click', async () => {
     try { await api('logout', { method: 'POST' }); } catch (e) {}
-    window.location.replace('index.html');
+    window.location.replace('../index.html');
   });
   $('btnRefresh').addEventListener('click', () => carregar());
 
@@ -806,7 +819,7 @@
   function clientesFiltrados() {
     const q = $('qClientes').value.trim().toLowerCase();
     let lista = state.data ? state.data.clientes.slice() : [];
-    if (q) lista = lista.filter((c) => (c.nome + ' ' + c.sobrenome + ' ' + c.email + ' ' + c.cidade + ' ' + c.bairro).toLowerCase().includes(q));
+    if (q) lista = lista.filter((c) => (c.nome + ' ' + c.sobrenome + ' ' + c.email + ' ' + c.cidade + ' ' + c.bairro + ' ' + c.rua + ' ' + c.numero + ' ' + c.cep).toLowerCase().includes(q));
     const ord = $('sClientes').value;
     if (ord === 'gasto') lista.sort((a, b) => b.total_gasto - a.total_gasto);
     else if (ord === 'pedidos') lista.sort((a, b) => b.pedidos - a.pedidos || b.total_gasto - a.total_gasto);
@@ -814,20 +827,26 @@
     return lista;
   }
 
+  function enderecoHtml(c) {
+    const linha = [titulo(c.bairro), titulo(c.cidade), c.cep].filter(Boolean).join(' · ');
+    return esc(titulo(c.rua) + ', ' + c.numero) + '<span class="sub">' + esc(linha) + '</span>';
+  }
+
   function renderTabelaClientes() {
     const lista = clientesFiltrados(), tb = $('tbClientes');
     if (!lista.length) {
-      tb.innerHTML = '<tr class="empty-row"><td colspan="6">Nenhum cliente encontrado.</td></tr>';
+      tb.innerHTML = '<tr class="empty-row"><td colspan="7">Nenhum cliente encontrado.</td></tr>';
       $('ftClientes').textContent = ''; return;
     }
     tb.innerHTML = lista.map((c) =>
       '<tr class="row" data-cid="' + c.id + '">' +
       '<td><span class="strong">' + esc(c.nome + ' ' + c.sobrenome) + '</span><span class="sub">' + esc(c.email) + '</span></td>' +
+      '<td>' + enderecoHtml(c) + '</td>' +
       '<td>' + c.idade + ' anos · ' + esc(SEXO_LABEL[c.sexo] || c.sexo) + '</td>' +
-      '<td>' + esc(titulo(c.cidade)) + '<span class="sub">' + esc(titulo(c.bairro)) + '</span></td>' +
       '<td>' + fmtData(c.criado_em) + '</td>' +
       '<td class="num">' + INT.format(c.pedidos) + '</td>' +
-      '<td class="num strong">' + brl(c.total_gasto) + '</td></tr>'
+      '<td class="num strong">' + brl(c.total_gasto) + '</td>' +
+      '<td>' + (c.admin ? '<span class="badge badge-admin">Administrador</span>' : '<span class="sub">Cliente</span>') + '</td></tr>'
     ).join('');
     $('ftClientes').textContent = INT.format(lista.length) + ' cliente(s) listados';
   }
@@ -841,6 +860,118 @@
   // gaveta de detalhes do cliente
   // ------------------------------------------------------------------
   function fecharGaveta() { $('drawer').classList.remove('open'); $('overlay').classList.remove('open'); }
+
+  function blocoConta(c) {
+    if (c.excluida) {
+      return '<div class="sec">Conta</div><div class="loading">Esta conta foi excluída. Os dados pessoais foram apagados; os pedidos ficam no histórico financeiro.</div>';
+    }
+    return '<div class="sec">Conta e acesso</div>' +
+      '<dl class="kv"><dt>Papel</dt><dd>' + (c.admin ? '<span class="badge badge-admin">Administrador</span>' : 'Cliente') + '</dd>' +
+      '<dt>Senha</dt><dd><span class="sub-inline">Guardada criptografada: não é possível visualizá-la.</span><br>' +
+      '<button type="button" class="btn btn-outline btn-sm" data-acao="senha" style="margin-top:6px">Redefinir senha</button></dd></dl>' +
+      '<div class="senha-box" id="senhaBox" hidden></div>' +
+      '<div class="acoes">' +
+        '<button type="button" class="btn btn-outline btn-sm" data-acao="editar">Editar dados</button>' +
+        '<button type="button" class="btn btn-outline btn-sm" data-acao="admin">' + (c.admin ? 'Remover administrador' : 'Tornar administrador') + '</button>' +
+        '<button type="button" class="btn btn-danger btn-sm" data-acao="excluir">Excluir conta</button>' +
+      '</div>' +
+      '<form class="edit-form" id="editForm" hidden novalidate>' +
+        '<div><label for="ed-nome">Nome</label><input id="ed-nome" required></div>' +
+        '<div><label for="ed-sobrenome">Sobrenome</label><input id="ed-sobrenome" required></div>' +
+        '<div class="full"><label for="ed-email">E-mail</label><input id="ed-email" type="email" required></div>' +
+        '<div><label for="ed-idade">Idade</label><input id="ed-idade" type="number" min="13" max="120" required></div>' +
+        '<div><label for="ed-sexo">Sexo</label><select id="ed-sexo">' +
+          '<option value="feminino">Feminino</option><option value="masculino">Masculino</option><option value="outro">Outro</option><option value="prefiro-nao-informar">Prefiro não informar</option></select></div>' +
+        '<div><label for="ed-cep">CEP</label><input id="ed-cep" maxlength="9" required></div>' +
+        '<div><label for="ed-cidade">Cidade</label><input id="ed-cidade" required></div>' +
+        '<div><label for="ed-bairro">Bairro</label><input id="ed-bairro" required></div>' +
+        '<div><label for="ed-rua">Rua</label><input id="ed-rua" required></div>' +
+        '<div><label for="ed-numero">Número</label><input id="ed-numero" required></div>' +
+        '<div class="acoes"><button type="submit" class="btn btn-primary btn-sm">Salvar alterações</button>' +
+        '<button type="button" class="btn btn-outline btn-sm" data-acao="cancelar-edicao">Cancelar</button></div>' +
+      '</form>';
+  }
+
+  function ligarAcoesCliente(c) {
+    const body = $('drawerBody');
+    if (c.excluida) return;
+
+    const f = $('editForm');
+    const set = (id, v) => { $('ed-' + id).value = v == null ? '' : v; };
+    set('nome', c.nome); set('sobrenome', c.sobrenome); set('email', c.email); set('idade', c.idade);
+    set('cep', c.cep); set('cidade', c.cidade); set('bairro', c.bairro); set('rua', c.rua); set('numero', c.numero);
+    $('ed-sexo').value = c.sexo;
+
+    const erroApi = (r) => toast(r.erros ? r.erros.join(' ') : (r.mensagem || 'Não foi possível concluir.'), true);
+    const recarregar = async () => { await carregar(); if (state.data) abrirCliente(c.id); };
+
+    body.onclick = async (ev) => {
+      const b = ev.target.closest('[data-acao], .senha-box [data-copiar]');
+      if (!b) return;
+      const acao = b.dataset.acao || b.dataset.copiar;
+
+      if (acao === 'editar') { f.hidden = false; $('ed-nome').focus(); return; }
+      if (acao === 'cancelar-edicao') { f.hidden = true; return; }
+
+      if (acao === 'copiar') {
+        const txt = b.dataset.texto || '';
+        try { await navigator.clipboard.writeText(txt); toast('Senha copiada.'); }
+        catch (e) { toast('Copie a senha manualmente.', true); }
+        return;
+      }
+
+      if (acao === 'senha') {
+        if (!confirm('Gerar uma senha temporária para ' + c.nome + '? A senha atual deixa de funcionar.')) return;
+        const r = await api('usuario_senha', { method: 'POST', body: { id: c.id } });
+        if (r._status === 401) { irParaLogin(); return; }
+        if (!r.sucesso) return erroApi(r);
+        const box = $('senhaBox');
+        box.hidden = false;
+        box.innerHTML = '<p>Senha temporária (mostrada só agora). Envie ao cliente e peça para trocá-la:</p>' +
+          '<b>' + esc(r.senha_temporaria) + '</b>' +
+          '<button type="button" class="btn btn-outline btn-sm" data-copiar="1" data-texto="' + esc(r.senha_temporaria) + '">Copiar</button>';
+        toast('Senha redefinida.');
+        return;
+      }
+
+      if (acao === 'admin') {
+        const msg = c.admin
+          ? 'Remover o papel de administrador de ' + c.nome + '? Ela deixa de acessar o painel.'
+          : 'Tornar ' + c.nome + ' administrador? Ela poderá entrar no painel com a própria senha.';
+        if (!confirm(msg)) return;
+        const r = await api('usuario_admin', { method: 'POST', body: { id: c.id, admin: !c.admin } });
+        if (r._status === 401) { irParaLogin(); return; }
+        if (!r.sucesso) return erroApi(r);
+        toast(r.mensagem); await recarregar(); return;
+      }
+
+      if (acao === 'excluir') {
+        if (!confirm('Excluir a conta de ' + c.nome + ' ' + c.sobrenome + '?\n\n' +
+            'Os dados pessoais serão apagados e a pessoa não consegue mais entrar. ' +
+            'Os pedidos ficam no histórico financeiro. Essa ação não pode ser desfeita.')) return;
+        const r = await api('usuario_excluir', { method: 'POST', body: { id: c.id } });
+        if (r._status === 401) { irParaLogin(); return; }
+        if (!r.sucesso) return erroApi(r);
+        toast(r.mensagem); fecharGaveta(); await carregar(); return;
+      }
+    };
+
+    f.onsubmit = async (ev) => {
+      ev.preventDefault();
+      if (!f.checkValidity()) { f.reportValidity(); return; }
+      const dados = {
+        id: c.id,
+        nome: $('ed-nome').value.trim(), sobrenome: $('ed-sobrenome').value.trim(), email: $('ed-email').value.trim(),
+        idade: $('ed-idade').value, sexo: $('ed-sexo').value, cep: $('ed-cep').value.trim(),
+        cidade: $('ed-cidade').value.trim(), bairro: $('ed-bairro').value.trim(),
+        rua: $('ed-rua').value.trim(), numero: $('ed-numero').value.trim(),
+      };
+      const r = await api('usuario_editar', { method: 'POST', body: dados });
+      if (r._status === 401) { irParaLogin(); return; }
+      if (!r.sucesso) return erroApi(r);
+      toast(r.mensagem); await recarregar();
+    };
+  }
   $('drawerClose').addEventListener('click', fecharGaveta);
   $('overlay').addEventListener('click', fecharGaveta);
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') fecharGaveta(); });
@@ -865,12 +996,14 @@
       '<div class="sec">Dados cadastrais</div>' +
       '<dl class="kv"><dt>Idade</dt><dd>' + c.idade + ' anos</dd><dt>Sexo</dt><dd>' + esc(SEXO_LABEL[c.sexo] || c.sexo) + '</dd>' +
       '<dt>Endereço</dt><dd>' + esc(endereco) + '</dd><dt>Cliente desde</dt><dd>' + fmtDataHora(c.criado_em) + '</dd><dt>Código</dt><dd>#' + c.id + '</dd></dl>' +
+      blocoConta(c) +
       '<div class="sec">Histórico de compras (' + ped.length + ')</div>' +
       (ped.length ? ped.map((p) =>
         '<div class="order-card"><div class="order-top"><div><b>Pedido #' + p.id + '</b><small>' + fmtDataHora(p.criado_em) + '</small></div><span class="badge b-' + p.status + '">' + ST_LABEL[p.status] + '</span></div>' +
         itensHtml(p) + '<div class="order-total"><span>Total</span><b>' + brl(p.total) + '</b></div></div>'
       ).join('') : '<div class="loading">Este cliente ainda não fez nenhuma compra.</div>') +
       (r.pedidos_limitado ? '<div class="loading">Mostrando os 500 pedidos mais recentes.</div>' : '');
+    ligarAcoesCliente(c);
   }
 
   // ------------------------------------------------------------------
