@@ -157,6 +157,79 @@
   .user-dropdown-link.logout{color:#ff6b6b;}
   .user-dropdown-link.logout svg{stroke:#ff6b6b;}
 
+  .gate-msg{background:var(--surface);border:1px solid var(--border-strong);border-radius:12px;padding:22px;text-align:center;color:#a7b0c7;margin-bottom:6px;font-size:14.5px;line-height:1.7;}
+  .gate-msg a{color:var(--blue-deep);font-weight:700;}
+  .form-erro{background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.35);color:#ff9a9a;border-radius:8px;padding:10px 12px;margin:14px 0;font-size:13.5px;}
+  .pedido-list{display:grid;gap:10px;margin-top:14px;}
+  .pedido-item{display:grid;gap:4px;text-align:left;background:var(--bg);border:1px solid var(--border-strong);border-radius:10px;padding:13px 15px;cursor:pointer;color:var(--ink);position:relative;font-family:inherit;}
+  .pedido-item:hover{border-color:var(--blue-deep);}
+  .pi-titulo{font-weight:700;font-size:14.5px;padding-right:80px;}
+  .pi-sub{font-size:12.5px;color:#7c86a0;}
+  .pi-status{font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;justify-self:start;margin-top:2px;}
+  .s-pendente{color:var(--orange);background:rgba(255,129,69,.12);}
+  .s-aprovada{color:var(--green);background:rgba(62,232,138,.12);}
+  .s-concluida{color:var(--blue-deep);background:rgba(77,141,255,.12);}
+  .s-recusada,.s-cancelada{color:#ff8a8a;background:rgba(255,107,107,.12);}
+  .pi-badge{position:absolute;top:12px;right:12px;background:var(--orange);color:#0b0f1a;font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;}
+  .vazio{color:#7c86a0;font-size:13.5px;padding:10px 0;}
+  #detalhePedido .descr{background:var(--bg);border-radius:8px;padding:10px 12px;font-size:13.5px;color:#a7b0c7;margin:10px 0;}
+  .confirmado{color:var(--green);font-weight:600;font-size:13.5px;margin-top:6px;}
+  .chat{display:flex;flex-direction:column;gap:10px;max-height:340px;overflow-y:auto;padding:12px;background:var(--bg);border-radius:10px;margin:14px 0;}
+  .msg{display:flex;flex-direction:column;max-width:82%;}
+  .msg.admin{align-self:flex-start;}
+  .msg.cliente{align-self:flex-end;align-items:flex-end;}
+  .bolha{padding:9px 12px;border-radius:12px;font-size:13.5px;line-height:1.5;word-break:break-word;}
+  .msg.admin .bolha{background:var(--surface);border:1px solid var(--border-strong);}
+  .msg.cliente .bolha{background:var(--blue-deep);color:#0b0f1a;}
+  .hora{font-size:11px;color:#7c86a0;margin-top:3px;}
+  .chat-form{display:flex;gap:10px;align-items:flex-end;}
+  .chat-form textarea{flex:1;padding:10px 12px;border-radius:9px;background:var(--bg);border:1px solid var(--border-strong);color:var(--ink);font-family:inherit;font-size:14px;resize:vertical;}
+  .detalhe-acoes{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+  .resumo-ped{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 4px;}
+  .chip-ped{font-family:var(--util);font-weight:700;font-size:13px;padding:6px 12px;border-radius:999px;background:var(--bg);border:1px solid var(--border-strong);color:var(--muted);}
+  .chip-ped b{color:var(--ink);margin-left:4px;}
+  .pc{position:relative;display:flex;gap:14px;align-items:flex-start;width:100%;text-align:left;background:var(--bg);border:1px solid var(--border-strong);border-radius:14px;padding:14px 16px;cursor:pointer;color:var(--ink);font-family:inherit;transition:border-color .15s,transform .15s;}
+  .pc:hover{border-color:var(--blue-deep);transform:translateY(-1px);}
+  .pc-data{flex:0 0 52px;height:58px;border-radius:12px;background:var(--surface);border:1px solid var(--border-strong);display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .pc-dia{font-family:var(--disp);font-size:20px;font-weight:800;line-height:1;}
+  .pc-mes{font-family:var(--util);font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--muted-2);margin-top:3px;text-transform:uppercase;}
+  .pc-corpo{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;}
+  .pc-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding-right:70px;}
+  .pc-top strong{font-size:15px;}
+  .pc-sub{font-size:12.5px;color:#7c86a0;}
+  .steps{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;}
+  .step{display:flex;align-items:center;gap:6px;font-size:11.5px;font-family:var(--util);font-weight:700;letter-spacing:.03em;color:#5c6a83;}
+  .step i{width:9px;height:9px;border-radius:50%;background:#37456a;display:inline-block;}
+  .step.done{color:var(--green);} .step.done i{background:var(--green);}
+  .step.current{color:var(--orange);} .step.current i{background:var(--orange);box-shadow:0 0 0 4px rgba(255,129,69,.18);}
+  .step+.step::before{content:"";width:14px;height:1px;background:#37456a;margin-right:2px;}
+  .step.done+.step::before{background:var(--green);}
+  .pi-badge{position:absolute;top:12px;right:12px;}
+  .bn{display:flex;gap:12px;align-items:flex-start;border-radius:12px;padding:14px 16px;margin:14px 0;font-size:14px;line-height:1.5;border:1px solid var(--border-strong);background:var(--bg);}
+  .bn svg{width:22px;height:22px;flex-shrink:0;margin-top:1px;}
+  .bn-pendente{border-color:rgba(255,129,69,.4);background:rgba(255,129,69,.07);}
+  .bn-pendente svg{stroke:var(--orange);}
+  .bn-aprovada{border-color:rgba(62,232,138,.4);background:rgba(62,232,138,.07);}
+  .bn-aprovada svg{stroke:var(--green);}
+  .bn-concluida{border-color:rgba(77,141,255,.4);background:rgba(77,141,255,.07);}
+  .bn-concluida svg{stroke:var(--blue-deep);}
+  .bn-recusada,.bn-cancelada{border-color:rgba(255,107,107,.35);background:rgba(255,107,107,.06);}
+  .bn-recusada svg,.bn-cancelada svg{stroke:#ff8a8a;}
+  .pedido-cabeca{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
+  .pedido-cabeca h3{font-size:18px;}
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;margin-top:12px;font-size:13.5px;}
+  .info-grid span{color:#7c86a0;display:block;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-family:var(--util);}
+  .info-grid b{font-weight:600;}
+  @media (max-width:640px){ .info-grid{grid-template-columns:1fr;} .pc{padding:12px;} .pc-top{padding-right:0;} .pi-badge{position:static;margin-top:4px;} }
+  .view-wrap{max-width:720px;margin:0 auto;padding-top:6px;}
+  .view-switch{display:flex;gap:6px;background:var(--surface);border:1px solid var(--border-strong);border-radius:12px;padding:5px;margin:4px auto 0;}
+  .vs-btn{flex:1;text-align:center;padding:11px 14px;border-radius:9px;font-family:var(--util);font-weight:700;font-size:15px;color:#a7b0c7;transition:background .15s,color .15s;}
+  .vs-btn:hover{color:var(--ink);}
+  .vs-btn.active{background:var(--blue-deep);color:#0b0f1a;}
+  .vs-n{display:inline-block;min-width:22px;padding:0 7px;margin-left:6px;border-radius:999px;background:rgba(11,15,26,.25);font-size:12.5px;line-height:20px;}
+  .vs-btn:not(.active) .vs-n{background:var(--bg);color:#a7b0c7;border:1px solid var(--border);}
+  .wrap-gate{max-width:720px;margin:24px auto 0;}
+  #meusSection .wrap{max-width:720px;}
 </style>
 </head>
 <body>
@@ -220,9 +293,19 @@
 </section>
 
 <!-- ================= FORM ================= -->
-<section class="form-section">
+<div class="wrap view-wrap">
+  <nav class="view-switch" aria-label="Assistência">
+    <a href="#novo" class="vs-btn" data-view="novo">Novo pedido</a>
+    <a href="#pedidos" class="vs-btn" data-view="pedidos">Meus pedidos <span class="vs-n" id="contPedidos">0</span></a>
+  </nav>
+</div>
+
+<div class="gate-msg wrap-gate" id="gateMsg" hidden>Entre na sua conta para pedir assistência técnica.<br><a href="logindaniel.html">Fazer login</a></div>
+
+<section class="form-section" id="viewNovo">
   <div class="wrap">
     <div class="form-card">
+
 
       <form class="request-form" id="requestForm" novalidate>
 
@@ -358,6 +441,7 @@
           </div>
         </div>
 
+        <p class="form-erro" id="formErro" hidden></p>
         <button type="submit" class="btn btn-primary submit-btn">Enviar solicitação</button>
         <p class="form-note">Sua solicitação será analisada pela nossa equipe antes da confirmação do agendamento.</p>
       </form>
@@ -373,11 +457,32 @@
         <div class="success-summary" id="successSummary"></div>
 
         <div class="success-actions">
+          <a href="#pedidos" class="btn btn-primary">Ver meus pedidos</a>
           <a href="../index.html" class="btn btn-outline">Voltar ao início</a>
-          <a href="lojadaniel.html" class="btn btn-primary">Ir para a loja</a>
         </div>
       </div>
 
+    </div>
+  </div>
+</section>
+
+<section class="form-section" id="meusSection" hidden>
+  <div class="wrap">
+    <div class="form-card">
+      <h2 style="font-size:20px">Meus atendimentos</h2>
+      <p class="vazio" style="margin-top:4px">Acompanhe seus pedidos e converse com a equipe da loja.</p>
+      <div id="listaPedidos" class="pedido-list"></div>
+      <div id="detalhePedido" hidden>
+        <button type="button" id="voltarLista" class="btn btn-outline btn-sm" style="margin-bottom:6px">← Voltar aos pedidos</button>
+        <div id="detalheTopo"></div>
+        <div id="chatMsgs" class="chat"></div>
+        <p class="form-erro" id="chatErro" hidden></p>
+        <form id="chatForm" class="chat-form">
+          <textarea id="chatTexto" rows="2" maxlength="1000" placeholder="Escreva uma mensagem para a loja..."></textarea>
+          <button type="submit" class="btn btn-primary btn-sm">Enviar</button>
+        </form>
+        <div class="detalhe-acoes"><button type="button" id="cancelarPedido" class="btn btn-outline btn-sm">Cancelar pedido</button></div>
+      </div>
     </div>
   </div>
 </section>
@@ -425,26 +530,224 @@
     return `${dia}/${mes}/${ano}`;
   }
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    if (!form.checkValidity()) {
-      form.reportValidity();
-      return;
+  // ---------------------------------------------------------------
+  // Envio real: grava o pedido no servidor (assistenciadaniel.php)
+  // ---------------------------------------------------------------
+  const MESES_PT = ['JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ'];
+  const STATUS_TXT = { pendente: 'Aguardando análise', aprovada: 'Aprovada', recusada: 'Recusada', concluida: 'Concluída', cancelada: 'Cancelada' };
+  const formErro = document.getElementById('formErro');
+  const chatErro = document.getElementById('chatErro');
+  const gateMsg = document.getElementById('gateMsg');
+  const meusSection = document.getElementById('meusSection');
+  const listaPedidos = document.getElementById('listaPedidos');
+  const detalhePedido = document.getElementById('detalhePedido');
+  const detalheTopo = document.getElementById('detalheTopo');
+  const chatMsgs = document.getElementById('chatMsgs');
+  const chatForm = document.getElementById('chatForm');
+  const chatTexto = document.getElementById('chatTexto');
+  const cancelarPedido = document.getElementById('cancelarPedido');
+  const submitBtn = form.querySelector('button[type="submit"]');
+  let pedidoAberto = null;
+
+  function api(acao, opt) {
+    opt = opt || {};
+    const init = { cache: 'no-store', method: opt.body ? 'POST' : 'GET', headers: {} };
+    if (opt.body) {
+      init.headers = { 'Content-Type': 'application/json', 'X-Requested-With': 'site' };
+      init.body = JSON.stringify(opt.body);
     }
+    return fetch(dtsUrl('assistenciadaniel.php') + '?acao=' + acao + (opt.qs || ''), init)
+      .then(async (r) => { let d = {}; try { d = await r.json(); } catch (e) {} d._status = r.status; return d; })
+      .catch(() => ({ sucesso: false, mensagem: 'Não foi possível conectar ao servidor. Tente novamente.', _status: 0 }));
+  }
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const dataHora = (s) => {
+    const m = /^(\d{4})-(\d{2})-(\d{2})(?: (\d{2}):(\d{2}))?/.exec(s || '');
+    return m ? m[3] + '/' + m[2] + '/' + m[1] + (m[4] ? ' ' + m[4] + ':' + m[5] : '') : '';
+  };
+  const rotulo = (grupo, chave) => (labels[grupo] && labels[grupo][chave]) || chave || '—';
+
+  const viewNovo = document.getElementById('viewNovo');
+  const contPedidos = document.getElementById('contPedidos');
+  const vsBtns = document.querySelectorAll('.vs-btn');
+  let logadoNaPagina = false;
+
+  // mostra só a visão escolhida (#novo ou #pedidos); sem login, mostra só o aviso
+  function aplicarView() {
+    const v = location.hash === '#pedidos' ? 'pedidos' : 'novo';
+    vsBtns.forEach((b) => b.classList.toggle('active', b.dataset.view === v));
+    gateMsg.hidden = logadoNaPagina;
+    viewNovo.hidden = !logadoNaPagina || v !== 'novo';
+    meusSection.hidden = !logadoNaPagina || v !== 'pedidos';
+    if (logadoNaPagina && v === 'pedidos') carregarPedidos(false);
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', aplicarView);
+
+  function mostrarSemLogin() {
+    logadoNaPagina = false;
+    form.style.display = 'none';
+    aplicarView();
+  }
+  function mostrarErro(el, msg) { el.textContent = msg; el.hidden = false; }
+
+  function prefill() {
+    const u = dtsGetUser() || {};
+    if (!form.elements['nome'].value && u.nome) form.elements['nome'].value = [u.nome, u.sobrenome].filter(Boolean).join(' ');
+    if (!form.elements['email'].value && u.email) form.elements['email'].value = u.email;
+  }
+
+  function carregarPedidos(atualizarVisao) {
+    return api('listar').then((r) => {
+      if (r._status === 401) { mostrarSemLogin(); return; }
+      logadoNaPagina = true;
+      form.style.display = '';
+      contPedidos.textContent = (r.pedidos || []).length;
+      if (atualizarVisao !== false) aplicarView();
+      prefill();
+      if (!r.pedidos || !r.pedidos.length) {
+        listaPedidos.innerHTML = '<p class="vazio">Você ainda não pediu nenhuma assistência.</p>';
+        return;
+      }
+      const cont = { pendente: 0, aprovada: 0, concluida: 0 };
+      r.pedidos.forEach((p) => { if (cont[p.status] !== undefined) cont[p.status]++; });
+      const etapas = ['Recebido', 'Em análise', 'Confirmado', 'Concluído'];
+      const posicao = { pendente: 1, aprovada: 2, concluida: 4 };
+      listaPedidos.innerHTML =
+        '<div class="resumo-ped"><span class="chip-ped">Em análise<b>' + cont.pendente + '</b></span><span class="chip-ped">Confirmados<b>' + cont.aprovada + '</b></span><span class="chip-ped">Concluídos<b>' + cont.concluida + '</b></span></div>' +
+        r.pedidos.map((p) => {
+          const dia = p.criado_em.slice(8, 10);
+          const mes = MESES_PT[+p.criado_em.slice(5, 7) - 1];
+          const pos = posicao[p.status];
+          const passos = pos === undefined ? '' :
+            '<div class="steps">' + etapas.map((t, k) => '<span class="step ' + (k < pos ? 'done' : k === pos ? 'current' : '') + '"><i></i>' + t + '</span>').join('') + '</div>';
+          const sub = p.data_confirmada
+            ? 'Marcado para ' + formatarData(p.data_confirmada) + ' · ' + esc(p.horario_confirmado || '')
+            : 'Preferência: ' + formatarData(p.data_preferida) + ' · ' + esc(rotulo('horarioPreferido', p.horario_preferido));
+          return '<button type="button" class="pc" data-id="' + p.id + '">' +
+            '<div class="pc-data"><span class="pc-dia">' + dia + '</span><span class="pc-mes">' + mes + '</span></div>' +
+            '<div class="pc-corpo">' +
+              '<div class="pc-top"><strong>' + esc(rotulo('tipoServico', p.tipo_servico)) + '</strong><span class="pi-status s-' + p.status + '">' + (STATUS_TXT[p.status] || p.status) + '</span></div>' +
+              '<div class="pc-sub">#' + p.id + ' · ' + esc(rotulo('tipoEquipamento', p.tipo_equipamento)) + ' · ' + sub + '</div>' +
+              passos +
+            '</div>' +
+            (p.nao_lidas > 0 ? '<span class="pi-badge">' + p.nao_lidas + ' nova(s)</span>' : '') +
+          '</button>';
+        }).join('');
+    });
+  }
+
+  function renderChat(msgs) {
+    chatMsgs.innerHTML = msgs.length
+      ? msgs.map((m) => '<div class="msg ' + m.autor + '"><div class="bolha">' + esc(m.texto).replace(/\n/g, '<br>') + '</div>' +
+          '<span class="hora">' + esc(dataHora(m.criado_em)) + ' · ' + (m.autor === 'admin' ? 'Daniel Tech Store' : 'Você') + '</span></div>').join('')
+      : '<p class="vazio">Nenhuma mensagem ainda.</p>';
+    chatMsgs.scrollTop = chatMsgs.scrollHeight;
+  }
+
+  function abrirPedido(id, manterScroll) {
+    return api('detalhe', { qs: '&id=' + id }).then((r) => {
+      if (r._status === 401) { mostrarSemLogin(); return; }
+      if (!r.sucesso) { mostrarErro(chatErro, r.mensagem); return; }
+      const p = r.pedido;
+      pedidoAberto = p;
+      listaPedidos.hidden = true;
+      detalhePedido.hidden = false;
+      const avisos = {
+        pendente: 'Recebemos seu pedido e nossa equipe está analisando. Você será avisado aqui mesmo.',
+        aprovada: 'Atendimento confirmado' + (p.data_confirmada ? ' para ' + formatarData(p.data_confirmada) : '') + (p.horario_confirmado ? ', ' + esc(p.horario_confirmado) : '') + '.',
+        concluida: 'Atendimento concluído. Obrigado por confiar na Daniel Tech Store!',
+        recusada: 'Este pedido não pôde ser atendido. Veja a conversa abaixo para o motivo.',
+        cancelada: 'Você cancelou este pedido.'
+      };
+      const icones = {
+        pendente: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>',
+        aprovada: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+        concluida: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.1V12a10 10 0 1 1-5.9-9.1"/><polyline points="22 4 12 14 9 11"/></svg>',
+        recusada: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
+        cancelada: '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>'
+      };
+      detalheTopo.innerHTML =
+        '<div class="pedido-cabeca"><h3>Pedido #' + p.id + '</h3><span class="pi-status s-' + p.status + '">' + (STATUS_TXT[p.status] || p.status) + '</span></div>' +
+        '<div class="bn bn-' + p.status + '">' + (icones[p.status] || '') + '<div>' + avisos[p.status] + '</div></div>' +
+        '<div class="info-grid">' +
+          '<div><span>Equipamento</span><b>' + esc(rotulo('tipoEquipamento', p.tipo_equipamento)) + (p.marca_modelo ? ' · ' + esc(p.marca_modelo) : '') + '</b></div>' +
+          '<div><span>Serviço</span><b>' + esc(rotulo('tipoServico', p.tipo_servico)) + '</b></div>' +
+          '<div><span>Atendimento</span><b>' + esc(rotulo('modalidade', p.modalidade)) + '</b></div>' +
+          '<div><span>Urgência</span><b>' + esc(rotulo('urgencia', p.urgencia)) + '</b></div>' +
+          '<div><span>Data preferida</span><b>' + esc(formatarData(p.data_preferida)) + ' · ' + esc(rotulo('horarioPreferido', p.horario_preferido)) + '</b></div>' +
+          (p.data_confirmada ? '<div><span>Confirmado</span><b>' + esc(formatarData(p.data_confirmada)) + ' · ' + esc(p.horario_confirmado) + '</b></div>' : '') +
+        '</div>' +
+        '<p class="descr">' + esc(p.descricao) + '</p>';
+      renderChat(r.mensagens);
+      cancelarPedido.hidden = !(p.status === 'pendente' || p.status === 'aprovada');
+      chatErro.hidden = true;
+      if (manterScroll !== true) chatTexto.focus();
+    });
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    formErro.hidden = true;
+    if (!form.checkValidity()) { form.reportValidity(); return; }
 
     const dados = Object.fromEntries(new FormData(form).entries());
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando...';
+    const r = await api('criar', { body: dados });
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Enviar solicitação';
+
+    if (r._status === 401) { mostrarSemLogin(); return; }
+    if (!r.sucesso) { mostrarErro(formErro, r.erros ? r.erros.join(' ') : (r.mensagem || 'Não foi possível enviar.')); return; }
 
     successSummary.innerHTML = `
-      <div><span>Equipamento</span><span>${labels.tipoEquipamento[dados.tipoEquipamento] || '—'}</span></div>
-      <div><span>Serviço</span><span>${labels.tipoServico[dados.tipoServico] || '—'}</span></div>
-      <div><span>Atendimento</span><span>${labels.modalidade[dados.modalidade] || '—'}</span></div>
-      <div><span>Data preferida</span><span>${formatarData(dados.dataPreferida)} · ${labels.horarioPreferido[dados.horarioPreferido] || '—'}</span></div>
-      <div><span>Urgência</span><span>${labels.urgencia[dados.urgencia] || '—'}</span></div>
+      <div><span>Equipamento</span><span>${esc(rotulo('tipoEquipamento', dados.tipoEquipamento))}</span></div>
+      <div><span>Serviço</span><span>${esc(rotulo('tipoServico', dados.tipoServico))}</span></div>
+      <div><span>Atendimento</span><span>${esc(rotulo('modalidade', dados.modalidade))}</span></div>
+      <div><span>Data preferida</span><span>${esc(formatarData(dados.dataPreferida))} · ${esc(rotulo('horarioPreferido', dados.horarioPreferido))}</span></div>
+      <div><span>Urgência</span><span>${esc(rotulo('urgencia', dados.urgencia))}</span></div>
     `;
-
-    form.classList.add('hide');
+    form.style.display = 'none';
     successBox.classList.add('show');
+    carregarPedidos();
   });
+
+  listaPedidos.addEventListener('click', (ev) => {
+    const b = ev.target.closest('.pc');
+    if (b) abrirPedido(Number(b.dataset.id));
+  });
+
+  document.getElementById('voltarLista').addEventListener('click', () => {
+    pedidoAberto = null;
+    detalhePedido.hidden = true;
+    listaPedidos.hidden = false;
+    carregarPedidos();
+  });
+
+  chatForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const texto = chatTexto.value.trim();
+    if (!texto || !pedidoAberto) return;
+    const r = await api('mensagem', { body: { id: pedidoAberto.id, texto: texto } });
+    if (r._status === 401) { mostrarSemLogin(); return; }
+    if (!r.sucesso) { mostrarErro(chatErro, r.mensagem || 'Não foi possível enviar a mensagem.'); return; }
+    chatTexto.value = '';
+    abrirPedido(pedidoAberto.id);
+  });
+
+  cancelarPedido.addEventListener('click', async () => {
+    if (!pedidoAberto || !confirm('Cancelar este pedido de assistência?')) return;
+    const r = await api('cancelar', { body: { id: pedidoAberto.id } });
+    if (r._status === 401) { mostrarSemLogin(); return; }
+    if (!r.sucesso) { mostrarErro(chatErro, r.mensagem); return; }
+    document.getElementById('voltarLista').click();
+  });
+
+  // mantém a conversa atualizada enquanto ela está aberta
+  setInterval(() => { if (pedidoAberto && !detalhePedido.hidden) abrirPedido(pedidoAberto.id, true); }, 20000);
+
+  carregarPedidos().then(() => aplicarView());
 </script>
 </body>
 </html>

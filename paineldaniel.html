@@ -169,6 +169,59 @@
   .toast.show{opacity:1;transform:translate(-50%,0);}
   .toast.err{border-color:rgba(255,107,107,.5);color:#ff9a9a;}
 
+  .badge.b-aprovada{color:var(--green);background:rgba(62,232,138,.12);}
+  .badge.b-concluida{color:var(--blue-deep);background:rgba(77,141,255,.12);}
+  .badge.b-recusada,.badge.b-cancelada{color:var(--red);background:rgba(255,107,107,.12);}
+  .edit-form textarea{width:100%;padding:9px 10px;border-radius:8px;background:var(--bg);border:1px solid var(--border-strong);color:var(--ink);font-size:13.5px;outline:none;font-family:inherit;resize:vertical;}
+  .edit-form textarea:focus{border-color:var(--blue);}
+  .btn-danger{background:transparent;border:1px solid rgba(255,107,107,.4);color:var(--red);}
+  .a-chat{display:flex;flex-direction:column;gap:9px;max-height:300px;overflow-y:auto;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;margin-top:8px;}
+  .a-msg{display:flex;flex-direction:column;max-width:85%;}
+  .a-msg.admin{align-self:flex-end;align-items:flex-end;}
+  .a-msg.cliente{align-self:flex-start;}
+  .a-bolha{padding:9px 12px;border-radius:12px;font-size:13.5px;line-height:1.5;word-break:break-word;}
+  .a-msg.admin .a-bolha{background:var(--blue-deep);color:#0b0f1a;}
+  .a-msg.cliente .a-bolha{background:var(--surface-2);border:1px solid var(--border-strong);}
+  .a-hora{font-size:11px;color:var(--muted-2);margin-top:3px;}
+  .a-compor{display:flex;gap:10px;align-items:flex-end;margin-top:10px;}
+  .a-compor textarea{flex:1;padding:9px 10px;border-radius:8px;background:var(--bg);border:1px solid var(--border-strong);color:var(--ink);font-size:13.5px;outline:none;font-family:inherit;resize:vertical;}
+  .a-compor textarea:focus{border-color:var(--blue);}
+  .a-compor .btn{flex:0 0 auto;}
+  /* ---------- MENU LATERAL E PÁGINAS ---------- */
+  .shell{display:grid;grid-template-columns:220px minmax(0,1fr);min-height:calc(100vh - 66px);}
+  .side{border-right:1px solid var(--border);background:#0f1524;padding:22px 14px;position:sticky;top:66px;height:calc(100vh - 66px);align-self:start;}
+  .side-nav{display:flex;flex-direction:column;gap:4px;}
+  .side-nav a{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:10px;color:var(--muted);font-family:var(--util);font-weight:700;font-size:15px;letter-spacing:.02em;transition:background .15s,color .15s;}
+  .side-nav a svg{width:18px;height:18px;stroke:currentColor;flex-shrink:0;}
+  .side-nav a:hover{background:var(--surface);color:var(--ink);}
+  .side-nav a.active{background:var(--blue-tint);color:var(--blue-deep);box-shadow:inset 3px 0 0 var(--blue);}
+  .side-nav .n{margin-left:auto;font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:0 8px;color:var(--muted);}
+  .main-area{padding-top:26px;padding-bottom:70px;min-width:0;}
+  .resumo{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px;}
+  .res-card{display:flex;flex-direction:column;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;transition:border-color .15s,transform .15s;}
+  .res-card:hover{border-color:var(--border-strong);transform:translateY(-2px);}
+  .res-l{font-family:var(--util);font-size:11.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted-2);}
+  .res-card b{font-family:var(--disp);font-size:26px;}
+  .res-s{font-size:12px;color:var(--muted-2);}
+  .recentes{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}
+  .card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .card-head a{font-family:var(--util);font-weight:700;font-size:13px;color:var(--blue-deep);}
+  .rec-list{display:grid;gap:8px;}
+  .rec-item{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:11px 13px;cursor:pointer;color:var(--ink);font-family:inherit;}
+  .rec-item:hover{border-color:var(--border-strong);}
+  .rec-main{display:flex;flex-direction:column;min-width:0;}
+  .rec-main b{font-size:13.5px;}
+  .rec-main small{font-size:12px;color:var(--muted-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .rec-val{font-size:13.5px;white-space:nowrap;}
+  .page-title{margin-bottom:18px;}
+  @media (max-width:980px){ .resumo{grid-template-columns:repeat(2,1fr);} .recentes{grid-template-columns:1fr;} }
+  @media (max-width:760px){
+    .shell{grid-template-columns:1fr;}
+    .side{position:static;height:auto;border-right:0;border-bottom:1px solid var(--border);padding:10px 14px;}
+    .side-nav{flex-direction:row;overflow-x:auto;gap:6px;}
+    .side-nav a{white-space:nowrap;padding:9px 12px;font-size:14px;}
+    .side-nav .n{display:none;}
+  }
   @media (max-width:1100px){
     .kpis{grid-template-columns:repeat(3,1fr);}
     .charts{grid-template-columns:repeat(2,1fr);}
@@ -210,16 +263,18 @@
     </div>
   </header>
 
-  <main class="wrap">
-    <div class="page-title">
-      <div>
-        <div class="eyebrow">Visão geral</div>
-        <h1>Faturamento e clientes</h1>
-      </div>
-      <div class="period-sum" id="periodSum"></div>
-    </div>
+  <div class="shell">
+    <aside class="side" aria-label="Menu do painel">
+      <nav class="side-nav">
+        <a href="#/visao" data-pag="visao" class="active"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Visão geral</a>
+        <a href="#/pedidos" data-pag="pedidos"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>Pedidos <span class="n" id="nPedidos">0</span></a>
+        <a href="#/clientes" data-pag="clientes"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg>Clientes <span class="n" id="nClientes">0</span></a>
+        <a href="#/assistencias" data-pag="assistencias"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 1-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 1 5.4-5.4l-2.6 2.6-2-2z"/></svg>Assistências <span class="n" id="nAssist">0</span></a>
+      </nav>
+    </aside>
 
-    <!-- filtros -->
+    <main class="wrap main-area">
+      <div id="holderFiltros" hidden>
     <section class="filters" aria-label="Filtros">
       <div class="f">
         <label for="fPeriodo">Período</label>
@@ -266,12 +321,30 @@
           <option value="mes">Mês</option>
         </select>
       </div>
-    </section>
+    </section>      </div>
 
-    <!-- indicadores -->
+      <!-- ===== Visão geral ===== -->
+      <div class="page" id="pgVisao">
+    <div class="page-title">
+      <div>
+        <div class="eyebrow">Visão geral</div>
+        <h1>Faturamento e clientes</h1>
+      </div>
+      <div class="period-sum" id="periodSum"></div>
+    </div>
+
+    <!-- filtros -->
+        <div id="slotFiltrosVisao"></div>
+
+        <div class="resumo">
+          <a class="res-card" href="#/pedidos"><span class="res-l">Pedidos pendentes</span><b id="rsPendentes">0</b><span class="res-s">no período escolhido</span></a>
+          <a class="res-card" href="#/assistencias"><span class="res-l">Assistências aguardando</span><b id="rsAssist">0</b><span class="res-s">esperando sua análise</span></a>
+          <a class="res-card" href="#/assistencias"><span class="res-l">Mensagens novas</span><b id="rsMsgs">0</b><span class="res-s">de clientes nas assistências</span></a>
+          <a class="res-card" href="#/clientes"><span class="res-l">Clientes cadastrados</span><b id="rsClientes">0</b><span class="res-s">contas ativas</span></a>
+        </div>
+
     <section class="kpis" id="kpis" aria-label="Indicadores"></section>
 
-    <!-- gráficos -->
     <section class="charts" aria-label="Gráficos">
       <div class="card span2">
         <h3>Faturamento ao longo do tempo</h3>
@@ -305,12 +378,27 @@
       </div>
     </section>
 
-    <!-- tabelas -->
-    <div class="tabs" role="tablist">
-      <button class="tab active" role="tab" data-tab="pedidos" id="tabPedidos">Pedidos <span class="n" id="nPedidos">0</span></button>
-      <button class="tab" role="tab" data-tab="clientes" id="tabClientes">Clientes <span class="n" id="nClientes">0</span></button>
-    </div>
+        <div class="recentes">
+          <div class="card">
+            <div class="card-head"><h3>Últimos pedidos</h3><a href="#/pedidos">Ver todos →</a></div>
+            <div id="recPedidos" class="rec-list"></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Últimas assistências</h3><a href="#/assistencias">Ver todas →</a></div>
+            <div id="recAssist" class="rec-list"></div>
+          </div>
+        </div>
+      </div>
 
+      <!-- ===== Pedidos ===== -->
+      <div class="page" id="pgPedidos" hidden>
+      <div class="page-title">
+        <div>
+          <div class="eyebrow">Pedidos</div>
+          <h1>Pedidos da loja</h1>
+        </div>
+      </div>
+        <div id="slotFiltrosPedidos"></div>
     <section id="panePedidos">
       <div class="toolbar">
         <label class="search">
@@ -330,8 +418,17 @@
       </div>
       <div class="table-foot"><span id="ftPedidos"></span><span>Clique em uma linha para ver os itens do pedido.</span></div>
     </section>
+      </div>
 
-    <section id="paneClientes" hidden>
+      <!-- ===== Clientes ===== -->
+      <div class="page" id="pgClientes" hidden>
+      <div class="page-title">
+        <div>
+          <div class="eyebrow">Clientes</div>
+          <h1>Clientes cadastrados</h1>
+        </div>
+      </div>
+    <section id="paneClientes">
       <div class="toolbar">
         <label class="search">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
@@ -352,7 +449,43 @@
       </div>
       <div class="table-foot"><span id="ftClientes"></span><span>“Total gasto” soma todo o histórico (sem pedidos cancelados). Clique para ver os detalhes.</span></div>
     </section>
-  </main>
+      </div>
+
+      <!-- ===== Assistências ===== -->
+      <div class="page" id="pgAssist" hidden>
+      <div class="page-title">
+        <div>
+          <div class="eyebrow">Assistência técnica</div>
+          <h1>Pedidos de assistência</h1>
+        </div>
+      </div>
+    <section id="paneAssist">
+      <div class="toolbar">
+        <label class="search">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input type="search" id="qAssist" placeholder="Buscar por nº, nome, telefone ou e-mail…">
+        </label>
+        <select id="fAssist" aria-label="Situação dos pedidos">
+          <option value="ativas" selected>Em andamento (aguardando e aprovadas)</option>
+          <option value="pendente">Aguardando análise</option>
+          <option value="aprovada">Aprovadas</option>
+          <option value="concluida">Concluídas</option>
+          <option value="recusada">Recusadas</option>
+          <option value="cancelada">Canceladas</option>
+          <option value="todas">Todas</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Nº</th><th>Recebido</th><th>Cliente</th><th>Serviço</th><th>Data preferida</th><th>Situação</th><th class="num">Mensagens</th></tr></thead>
+          <tbody id="tbAssist"></tbody>
+        </table>
+      </div>
+      <div class="table-foot"><span id="ftAssist"></span><span>Clique em um pedido para aprovar, recusar ou conversar com o cliente.</span></div>
+    </section>
+      </div>
+    </main>
+  </div>
 
   <div class="overlay" id="overlay"></div>
   <aside class="drawer" id="drawer" aria-label="Detalhes do cliente">
@@ -501,12 +634,14 @@
     preencherCategorias(r.categorias_disponiveis || []);
     renderResumoPeriodo(r);
     renderKpis(r);
+    atualizarVisaoPedidos(r);
     renderTabelaPedidos();
     renderTabelaClientes();
     $('nPedidos').textContent = INT.format(r.pedidos.length) + (r.pedidos_limitado ? '+' : '');
     $('nClientes').textContent = INT.format(r.clientes.length);
     const agora = new Date();
     $('updated').textContent = 'Atualizado às ' + String(agora.getHours()).padStart(2, '0') + ':' + String(agora.getMinutes()).padStart(2, '0');
+    carregarAssist();
     await renderGraficos(r);
   }
 
@@ -714,14 +849,7 @@
   // ------------------------------------------------------------------
   // abas
   // ------------------------------------------------------------------
-  document.querySelectorAll('.tab').forEach((b) => b.addEventListener('click', () => {
-    state.tab = b.dataset.tab;
-    document.querySelectorAll('.tab').forEach((x) => x.classList.toggle('active', x === b));
-    $('panePedidos').hidden = state.tab !== 'pedidos';
-    $('paneClientes').hidden = state.tab !== 'clientes';
-  }));
-
-  // ------------------------------------------------------------------
+    // ------------------------------------------------------------------
   // tabela de pedidos
   // ------------------------------------------------------------------
   function pedidosFiltrados() {
@@ -1007,12 +1135,226 @@
   }
 
   // ------------------------------------------------------------------
+  // assistência técnica: lista, decisão (aprovar/recusar/concluir) e conversa
+  // ------------------------------------------------------------------
+  const TIPO_EQ = { desktop: 'PC Desktop', notebook: 'Notebook', console: 'Console de videogame', periferico: 'Periférico', outro: 'Outro' };
+  const TIPO_SERV = { diagnostico: 'Diagnóstico', manutencao: 'Manutenção preventiva', 'reparo-hardware': 'Reparo de hardware', software: 'Formatação / Software', montagem: 'Montagem de PC', outro: 'Outro' };
+  const MODAL = { loja: 'Levar na loja', coleta: 'Coleta e entrega' };
+  const HORARIO = { manha: 'Manhã', tarde: 'Tarde', qualquer: 'Qualquer horário' };
+  const HORARIO_TXT = { manha: 'Manhã (8h–12h)', tarde: 'Tarde (13h–18h)', qualquer: 'Manhã (8h–12h)' };
+  const URG = { 'sem-pressa': 'Sem pressa', 'poucos-dias': 'Em poucos dias', urgente: 'Urgente' };
+  const ASSIST_STATUS = { pendente: 'Aguardando análise', aprovada: 'Aprovada', recusada: 'Recusada', concluida: 'Concluída', cancelada: 'Cancelada' };
+  state.assistAberto = null;
+
+  async function carregarAssist() {
+    const r = await api('assist_listar', { params: { status: 'todas' } });
+    if (r._status === 401) { irParaLogin(); return; }
+    if (!r.sucesso) return;
+    atualizarVisaoAssist(r);
+    const f = $('fAssist').value;
+    const q = $('qAssist').value.trim().toLowerCase().replace('#', '');
+    const lista = r.pedidos.filter((p) => {
+      if (f === 'ativas' ? !(p.status === 'pendente' || p.status === 'aprovada') : (f !== 'todas' && p.status !== f)) return false;
+      if (!q) return true;
+      return String(p.id) === q || [p.nome, p.email, p.telefone].join(' ').toLowerCase().includes(q);
+    });
+    renderTabelaAssist(lista);
+  }
+
+  function renderTabelaAssist(lista) {
+    const tb = $('tbAssist');
+    if (!lista.length) {
+      tb.innerHTML = '<tr class="empty-row"><td colspan="7">Nenhum pedido nesta situação.</td></tr>';
+      $('ftAssist').textContent = '';
+      return;
+    }
+    tb.innerHTML = lista.map((p) =>
+      '<tr class="row" data-aid="' + p.id + '">' +
+      '<td class="strong">#' + p.id + '</td>' +
+      '<td>' + fmtDataHora(p.criado_em) + '</td>' +
+      '<td><span class="strong">' + esc(p.nome) + '</span><span class="sub">' + esc(p.telefone) + ' · ' + esc(p.email) + '</span></td>' +
+      '<td>' + esc(TIPO_SERV[p.tipo_servico] || p.tipo_servico) + '<span class="sub">' + esc(TIPO_EQ[p.tipo_equipamento] || '') + (p.marca_modelo ? ' · ' + esc(p.marca_modelo) : '') + '</span></td>' +
+      '<td>' + fmtData(p.data_preferida) + '<span class="sub">' + esc(HORARIO[p.horario_preferido] || '') + ' · ' + esc(URG[p.urgencia] || '') + '</span></td>' +
+      '<td><span class="badge b-' + p.status + '">' + esc(ASSIST_STATUS[p.status] || p.status) + '</span></td>' +
+      '<td class="num">' + (p.nao_lidas > 0 ? '<span class="badge b-pendente">' + p.nao_lidas + ' nova(s)</span>' : '<span class="sub">—</span>') + '</td></tr>'
+    ).join('');
+    $('ftAssist').textContent = lista.length + ' pedido(s)';
+  }
+
+  $('tbAssist').addEventListener('click', (ev) => {
+    const tr = ev.target.closest('tr.row');
+    if (tr) abrirAssist(+tr.dataset.aid);
+  });
+  $('fAssist').addEventListener('change', carregarAssist);
+  let buscaTimer;
+  $('qAssist').addEventListener('input', () => { clearTimeout(buscaTimer); buscaTimer = setTimeout(carregarAssist, 300); });
+
+  async function abrirAssist(id) {
+    state.assistAberto = id;
+    const body = $('drawerBody');
+    body.onclick = null; body.onsubmit = null;
+    body.innerHTML = '<div class="loading">Carregando…</div>';
+    $('drawer').classList.add('open'); $('overlay').classList.add('open');
+    const r = await api('assist_detalhe', { params: { id: id } });
+    if (r._status === 401) { fecharGaveta(); irParaLogin(); return; }
+    if (!r.sucesso) { body.innerHTML = '<div class="loading">' + esc(r.mensagem || 'Erro ao carregar o pedido.') + '</div>'; return; }
+    renderAssistDrawer(r.pedido, r.mensagens);
+    ligarAssist(r.pedido);
+    carregarAssist();
+  }
+
+  function renderAssistDrawer(p, msgs) {
+    const endereco = [titulo(p.rua) + ', ' + p.numero, titulo(p.bairro), titulo(p.cidade), p.cep].filter(Boolean).join(' · ');
+    let decisao = '';
+    if (p.status === 'pendente') {
+      decisao = '<div class="sec">Decisão</div>' +
+        '<form id="decForm" class="edit-form" novalidate>' +
+          '<div><label for="dec-data">Data confirmada</label><input id="dec-data" type="date" min="' + isoLocal(new Date()) + '" value="' + esc(p.data_preferida) + '" required></div>' +
+          '<div><label for="dec-hora">Horário confirmado</label><input id="dec-hora" maxlength="60" value="' + esc(HORARIO_TXT[p.horario_preferido] || '') + '" required></div>' +
+          '<div class="full"><label for="dec-resp">Mensagem para o cliente (obrigatória para recusar)</label><textarea id="dec-resp" rows="3" maxlength="1000"></textarea></div>' +
+          '<div class="acoes full">' +
+            '<button type="button" class="btn btn-primary btn-sm" data-acao="aprovar">Aprovar pedido</button>' +
+            '<button type="button" class="btn btn-danger btn-sm" data-acao="recusar">Recusar</button>' +
+          '</div>' +
+        '</form>';
+    } else if (p.status === 'aprovada') {
+      decisao = '<div class="sec">Atendimento</div>' +
+        '<dl class="kv"><dt>Marcado para</dt><dd>' + fmtData(p.data_confirmada) + ' · ' + esc(p.horario_confirmado) + '</dd></dl>' +
+        '<div class="acoes"><button type="button" class="btn btn-primary btn-sm" data-acao="concluir">Marcar como concluído</button></div>';
+    } else if (p.resposta_admin) {
+      decisao = '<div class="sec">Resposta da loja</div><div class="loading" style="text-align:left;padding:4px 0">' + esc(p.resposta_admin) + '</div>';
+    }
+
+    $('drawerBody').innerHTML =
+      '<div class="who"><div class="avatar">#' + p.id + '</div><div><h2>Pedido #' + p.id + '</h2>' +
+        '<p><span class="badge b-' + p.status + '">' + esc(ASSIST_STATUS[p.status] || p.status) + '</span> · recebido em ' + fmtDataHora(p.criado_em) + '</p></div></div>' +
+      '<div class="sec">Cliente</div>' +
+      '<dl class="kv"><dt>Nome</dt><dd>' + esc(p.nome) + '</dd>' +
+        '<dt>Conta</dt><dd>' + esc(p.cli_nome + ' ' + p.cli_sobrenome) + ' · ' + esc(p.cli_email) + '</dd>' +
+        '<dt>Telefone</dt><dd>' + esc(p.telefone) + '</dd>' +
+        '<dt>E-mail do pedido</dt><dd>' + esc(p.email) + '</dd>' +
+        '<dt>Endereço</dt><dd>' + esc(endereco) + '</dd></dl>' +
+      '<div class="sec">Pedido</div>' +
+      '<dl class="kv"><dt>Equipamento</dt><dd>' + esc(TIPO_EQ[p.tipo_equipamento] || p.tipo_equipamento) + (p.marca_modelo ? ' · ' + esc(p.marca_modelo) : '') + '</dd>' +
+        '<dt>Serviço</dt><dd>' + esc(TIPO_SERV[p.tipo_servico] || p.tipo_servico) + '</dd>' +
+        '<dt>Atendimento</dt><dd>' + esc(MODAL[p.modalidade] || p.modalidade) + '</dd>' +
+        '<dt>Data preferida</dt><dd>' + fmtData(p.data_preferida) + ' · ' + esc(HORARIO[p.horario_preferido] || '') + '</dd>' +
+        '<dt>Urgência</dt><dd>' + esc(URG[p.urgencia] || p.urgencia) + '</dd>' +
+        '<dt>Problema</dt><dd style="white-space:pre-wrap">' + esc(p.descricao) + '</dd></dl>' +
+      decisao +
+      '<div class="sec">Conversa com o cliente</div>' +
+      '<div class="a-chat" id="aChat">' + (msgs.length
+        ? msgs.map((m) => '<div class="a-msg ' + m.autor + '"><div class="a-bolha">' + esc(m.texto).replace(/\n/g, '<br>') + '</div>' +
+            '<span class="a-hora">' + esc(fmtDataHora(m.criado_em)) + ' · ' + (m.autor === 'admin' ? 'Loja' : 'Cliente') + '</span></div>').join('')
+        : '<div class="loading">Nenhuma mensagem ainda.</div>') + '</div>' +
+      '<form id="aChatForm" class="a-compor"><textarea id="aChatTexto" rows="2" maxlength="1000" placeholder="Escreva para o cliente…"></textarea>' +
+        '<button type="submit" class="btn btn-primary btn-sm">Enviar</button></form>';
+    const chat = $('aChat'); if (chat) chat.scrollTop = chat.scrollHeight;
+  }
+
+  function ligarAssist(p) {
+    const body = $('drawerBody');
+    const erro = (r) => toast(r.erros ? r.erros.join(' ') : (r.mensagem || 'Não foi possível concluir.'), true);
+
+    body.onclick = async (ev) => {
+      const b = ev.target.closest('[data-acao]');
+      if (!b) return;
+      const acao = b.dataset.acao;
+
+      if (acao === 'aprovar') {
+        const data = $('dec-data').value, hora = $('dec-hora').value.trim(), resp = $('dec-resp').value.trim();
+        if (!data || !hora) return toast('Informe a data e o horário confirmados.', true);
+        if (!confirm('Aprovar o pedido #' + p.id + ' para ' + fmtData(data) + ' · ' + hora + '?')) return;
+        const r = await api('assist_status', { method: 'POST', body: { id: p.id, acao: 'aprovar', data_confirmada: data, horario_confirmado: hora, resposta: resp } });
+        if (r._status === 401) return irParaLogin();
+        if (!r.sucesso) return erro(r);
+        toast(r.mensagem); abrirAssist(p.id); return;
+      }
+      if (acao === 'recusar') {
+        const resp = $('dec-resp').value.trim();
+        if (resp.length < 5) return toast('Escreva o motivo da recusa no campo de mensagem.', true);
+        if (!confirm('Recusar o pedido #' + p.id + '? O cliente recebe o motivo no chat.')) return;
+        const r = await api('assist_status', { method: 'POST', body: { id: p.id, acao: 'recusar', resposta: resp } });
+        if (r._status === 401) return irParaLogin();
+        if (!r.sucesso) return erro(r);
+        toast(r.mensagem); abrirAssist(p.id); return;
+      }
+      if (acao === 'concluir') {
+        if (!confirm('Marcar o atendimento #' + p.id + ' como concluído?')) return;
+        const r = await api('assist_status', { method: 'POST', body: { id: p.id, acao: 'concluir' } });
+        if (r._status === 401) return irParaLogin();
+        if (!r.sucesso) return erro(r);
+        toast(r.mensagem); abrirAssist(p.id); return;
+      }
+    };
+
+    body.onsubmit = async (ev) => {
+      if (ev.target.id !== 'aChatForm') return;
+      ev.preventDefault();
+      const texto = $('aChatTexto').value.trim();
+      if (!texto) return;
+      const r = await api('assist_mensagem', { method: 'POST', body: { id: p.id, texto: texto } });
+      if (r._status === 401) return irParaLogin();
+      if (!r.sucesso) return erro(r);
+      abrirAssist(p.id);
+    };
+  }
+
+  // atualiza a conversa aberta sem perder o que está sendo digitado
+  // a lista de assistências também se atualiza sozinha enquanto a aba está aberta
+  setInterval(() => { if (state.tab === 'assist') carregarAssist(); }, 10000);
+  setInterval(() => {
+    const aberta = state.assistAberto && $('drawer').classList.contains('open');
+    const digitando = $('aChatTexto') && $('aChatTexto').value.trim() !== '';
+    if (aberta && !digitando) abrirAssist(state.assistAberto);
+  }, 10000);
+
+  // ------------------------------------------------------------------
+  // páginas: Visão geral · Pedidos · Clientes · Assistências
+  // ------------------------------------------------------------------
+  const PAGINAS = { visao: 'pgVisao', pedidos: 'pgPedidos', clientes: 'pgClientes', assistencias: 'pgAssist' };
+  function paginaDoEndereco() { const h = location.hash.replace(/^#\/?/, ''); return PAGINAS[h] ? h : 'visao'; }
+  function irPagina(nome) {
+    if (!PAGINAS[nome]) nome = 'visao';
+    state.tab = nome === 'assistencias' ? 'assist' : nome;
+    Object.keys(PAGINAS).forEach((k) => { $(PAGINAS[k]).hidden = k !== nome; });
+    document.querySelectorAll('.side-nav a[data-pag]').forEach((a) => a.classList.toggle('active', a.dataset.pag === nome));
+    const slot = nome === 'visao' ? $('slotFiltrosVisao') : nome === 'pedidos' ? $('slotFiltrosPedidos') : null;
+    if (slot) slot.appendChild($('holderFiltros'));
+    $('holderFiltros').hidden = !slot;
+    if (location.hash !== '#/' + nome) history.replaceState(null, '', '#/' + nome);
+    if (nome === 'assistencias') carregarAssist();
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', () => irPagina(paginaDoEndereco()));
+
+  // resumo da visão geral
+  function atualizarVisaoPedidos(r) {
+    $('rsPendentes').textContent = r.pedidos.filter((p) => p.status === 'pendente').length;
+    $('rsClientes').textContent = INT.format(r.kpis.clientes_total);
+    $('recPedidos').innerHTML = r.pedidos.slice(0, 5).map((p) =>
+      '<button type="button" class="rec-item" data-pid="' + p.id + '"><span class="rec-main"><b>Pedido #' + p.id + '</b><small>' + esc(p.cliente) + ' · ' + esc(fmtDataHora(p.criado_em)) + '</small></span><b class="rec-val">' + brl(p.total) + '</b></button>'
+    ).join('') || '<div class="vazio">Nenhum pedido neste período.</div>';
+  }
+  function atualizarVisaoAssist(r) {
+    const pend = r.contagem.pendente || 0;
+    $('nAssist').textContent = pend;
+    $('rsAssist').textContent = pend;
+    $('rsMsgs').textContent = r.nao_lidas || 0;
+    $('recAssist').innerHTML = r.pedidos.slice(0, 5).map((p) =>
+      '<button type="button" class="rec-item" data-aid="' + p.id + '"><span class="rec-main"><b>#' + p.id + ' · ' + esc(TIPO_SERV[p.tipo_servico] || p.tipo_servico) + '</b><small>' + esc(p.nome) + ' · ' + esc(fmtDataHora(p.criado_em)) + '</small></span><span class="badge b-' + p.status + '">' + esc(ASSIST_STATUS[p.status] || p.status) + '</span></button>'
+    ).join('') || '<div class="vazio">Nenhuma assistência ainda.</div>';
+  }
+  $('recAssist').addEventListener('click', (ev) => { const b = ev.target.closest('[data-aid]'); if (b) abrirAssist(+b.dataset.aid); });
+  $('recPedidos').addEventListener('click', (ev) => { if (ev.target.closest('[data-pid]')) location.hash = '#/pedidos'; });
+
+  // ------------------------------------------------------------------
   // início: já existe sessão de administrador?
   // ------------------------------------------------------------------
   (async function iniciar() {
     try {
       const r = await api('sessao');
-      if (r.autenticado) { $('checando').hidden = true; $('app').hidden = false; await carregar(); }
+      if (r.autenticado) { $('checando').hidden = true; $('app').hidden = false; irPagina(paginaDoEndereco()); await carregar(); }
       else irParaLogin();
     } catch (e) { $('checando').textContent = 'Não foi possível conectar ao servidor. Recarregue a página.'; }
   })();

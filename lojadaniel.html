@@ -133,6 +133,7 @@
   .cart-item{display:flex;gap:12px;align-items:center;border-bottom:1px solid var(--border);padding-bottom:14px;}
   .cart-item-thumb{width:52px;height:52px;border-radius:9px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
   .cart-item-thumb svg{width:24px;height:24px;stroke:var(--blue-deep);}
+  .cart-item-thumb img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
   .cart-item-info{flex:1;min-width:0;}
   .cart-item-info p{font-size:13.5px;font-weight:600;}
   .cart-item-info span{font-size:12.5px;color:var(--muted-2);}
@@ -285,7 +286,7 @@
       <span>Total</span>
       <b id="cartTotal">R$ 0,00</b>
     </div>
-    <button class="btn btn-primary" id="checkoutBtn">Finalizar compra</button>
+    <button class="btn btn-primary" id="checkoutBtn" disabled>Pagamento em breve</button>
   </div>
 </aside>
 
@@ -327,30 +328,38 @@
   let activeCat = "todos";
   let searchTerm = "";
   let sortMode = "relevance";
-  // Carrinho por usuário (localStorage: dts_cart_<id>).
-  // - Sem login: não dá para adicionar (vai para cadastro) e a UI fica vazia.
-  // - Com login: carrega/salva o carrinho daquele usuário.
-  // - No logout a sessão some, mas o carrinho do usuário permanece — ao logar de novo, volta.
-  function cartStorageKey() {
-    const u = dtsGetUser();
-    if (!u || u.id == null) return null;
-    return 'dts_cart_' + u.id;
+  // Carrinho guardado NA CONTA (servidor): aparece em qualquer navegador onde a conta entrar.
+  // Sem login o carrinho fica só nesta página e não é salvo.
+  let cart = {};            // id -> qty
+  let logado = false;
+  let salvarTimer = null;
+  const CART_API = typeof dtsUrl === 'function' ? dtsUrl('carrinhodaniel.php') : 'carrinhodaniel.php';
+  function salvarCarrinhoDepois(){
+    if (!logado) return;
+    clearTimeout(salvarTimer);
+    salvarTimer = setTimeout(salvarCarrinho, 400);
   }
-  function loadCart(){
-    const key = cartStorageKey();
-    if (!key) return {}; // não logado → carrinho vazio na tela
-    try {
-      const saved = JSON.parse(localStorage.getItem(key) || '{}');
-      if (!saved || typeof saved !== 'object' || Array.isArray(saved)) return {};
-      const c = {};
-      for (const id in saved) {
-        const qty = parseInt(saved[id], 10);
-        if (qty > 0 && PRODUCTS.some(p => p.id == id)) c[id] = Math.min(qty, 99);
-      }
-      return c;
-    } catch (e) { return {}; }
+  function salvarCarrinho(){
+    return fetch(CART_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'site' },
+      body: JSON.stringify({ itens: Object.keys(cart).map(id => ({ id: Number(id), qtd: cart[id] })) })
+    }).catch(() => {});
   }
-  let cart = loadCart(); // id -> qty
+  function carregarCarrinho(){
+    return fetch(CART_API, { cache: 'no-store' })
+      .then(r => r.status === 401 ? null : r.json())
+      .then(d => {
+        cart = {};
+        if (d === null) { logado = false; }
+        else {
+          logado = true;
+          (d.itens || []).forEach(i => { if (PRODUCTS.some(p => p.id === i.id)) cart[i.id] = Math.min(i.qtd, 20); });
+        }
+        updateCartUI(false);
+      })
+      .catch(() => { logado = false; updateCartUI(false); });
+  }
 
   const grid = document.getElementById('productsGrid');
   const emptyState = document.getElementById('emptyState');
@@ -417,7 +426,7 @@
 
   function addToCart(id){
     // Só usuário logado pode adicionar itens ao carrinho
-    if (!dtsGetUser()) {
+    if (!logado) {
       window.location.href = 'cadastrodaniel.html';
       return;
     }
@@ -431,14 +440,8 @@
     updateCartUI();
   }
 
-  function updateCartUI(){
-    const key = cartStorageKey();
-    if (!key) {
-      // Sem login: não grava e mostra carrinho vazio
-      cart = {};
-    } else {
-      try { localStorage.setItem(key, JSON.stringify(cart)); } catch (e) {}
-    }
+  function updateCartUI(salvar){
+    if (salvar !== false) salvarCarrinhoDepois();
     const ids = Object.keys(cart);
     const countEl = document.getElementById('cartCount');
     const itemsEl = document.getElementById('cartItems');
@@ -460,7 +463,7 @@
       total += p.price * qty;
       return `
         <div class="cart-item">
-          <div class="cart-item-thumb"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${ICONS[p.icon]}</svg></div>
+          <div class="cart-item-thumb">${p.image ? `<img src="${p.image}" alt="${p.name}" data-fb="${p.icon}">` : `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${ICONS[p.icon]}</svg>`}</div>
           <div class="cart-item-info">
             <p>${p.name}</p>
             <span>${qty}x ${money(p.price)}</span>
@@ -469,6 +472,14 @@
         </div>`;
     }).join('');
     totalEl.textContent = money(total);
+    // se a foto não existir, mostra o ícone no lugar
+    itemsEl.querySelectorAll('img[data-fb]').forEach((img) => img.addEventListener('error', () => {
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('viewBox', '0 0 24 24'); svg.setAttribute('fill', 'none'); svg.setAttribute('stroke-width', '1.6');
+      svg.setAttribute('stroke-linecap', 'round'); svg.setAttribute('stroke-linejoin', 'round');
+      svg.innerHTML = ICONS[img.dataset.fb] || '';
+      img.replaceWith(svg);
+    }, { once: true }));
 
     itemsEl.querySelectorAll('.cart-item-remove').forEach(btn => {
       btn.addEventListener('click', () => removeFromCart(btn.dataset.id));
@@ -503,9 +514,30 @@
   document.getElementById('cartBtn').addEventListener('click', openCart);
   document.getElementById('cartClose').addEventListener('click', closeCart);
   overlay.addEventListener('click', closeCart);
-  document.getElementById('checkoutBtn').addEventListener('click', () => {
-    if(Object.keys(cart).length === 0){ alert('Seu carrinho está vazio.'); return; }
-    alert('Compra simulada! Em um site real, aqui você seguiria para o pagamento.');
+  const CHECKOUT_ATIVO = false; // troque para true quando a API de pagamento estiver pronta
+  document.getElementById('checkoutBtn').addEventListener('click', async () => {
+    if (!CHECKOUT_ATIVO) { alert('O pagamento online ainda não está disponível.'); return; }
+    if (Object.keys(cart).length === 0) { alert('Seu carrinho está vazio.'); return; }
+    if (!logado) { window.location.href = 'logindaniel.html'; return; }
+    clearTimeout(salvarTimer);   // evita salvar o carrinho antigo depois do pedido
+    const btn = document.getElementById('checkoutBtn');
+    btn.disabled = true; btn.textContent = 'Enviando pedido...';
+    try {
+      const res = await fetch(typeof dtsUrl === 'function' ? dtsUrl('pedidodaniel.php') : 'pedidodaniel.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ itens: Object.keys(cart).map(id => ({ id: Number(id), qtd: cart[id] })) })
+      });
+      const d = await res.json().catch(() => ({}));
+      if (res.status === 401) { logado = false; alert('Sua sessão expirou. Entre novamente para finalizar a compra.'); return; }
+      if (!res.ok || !d.sucesso) { alert(d.mensagem || 'Não foi possível registrar o pedido. Tente novamente.'); return; }
+      cart = {}; updateCartUI(false);
+      alert('Pedido #' + d.pedido.id + ' registrado! Total: ' + money(d.pedido.total) + '. Nossa equipe entrará em contato para confirmar o pagamento e a entrega.');
+    } catch (e) {
+      alert('Não foi possível conectar ao servidor. Tente novamente.');
+    } finally {
+      btn.disabled = false; btn.textContent = 'Finalizar compra';
+    }
   });
 
   // mobile nav
@@ -513,17 +545,9 @@
   const navLinks = document.getElementById('navLinks');
   burger.addEventListener('click', () => navLinks.classList.toggle('open'));
 
-  updateCartUI();
+  updateCartUI(false);
   render();
-
-  // Após o auth confirmar a sessão, recarrega o carrinho do usuário logado
-  // (útil quando a página abre com cache de sessão ainda sendo validado).
-  document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-      cart = loadCart();
-      updateCartUI();
-    }, 500);
-  });
+  carregarCarrinho();
 </script>
 </body>
 </html>
